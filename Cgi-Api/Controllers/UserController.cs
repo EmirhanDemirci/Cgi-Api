@@ -6,11 +6,12 @@ using Cgi_Api.Models;
 using Cgi_Api.Services.Helpers;
 using Cgi_Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cgi_Api.Controllers
 {
-    [Authorize]
+    [EnableCors("AllowAllHeaders")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

@@ -12,7 +12,7 @@ namespace Cgi_Api.Composition
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             //TODO: Change hardcoded Connectionstring
-            var connectionString = "Server=.;Database=CGI_V2;Trusted_Connection=True;MultipleActiveResultSets=true";
+            var connectionString = "Server=5.39.113.6, 3305;Database=CGIV2;User Id=Emirhan;Password=tYuB@Q8h4yZb;MultipleActiveResultSets=true";
             services.AddTransient<ApplicationDbContext>()
                 .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
                     connectionString ?? throw new InvalidOperationException()));

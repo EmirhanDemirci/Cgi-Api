@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +28,18 @@ namespace Cgi_Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
             services.AddControllers();
+
             new DbInstalller().InstallServices(services, Configuration);
             new JWTInstaller().InstallServices(services, Configuration);
             new ServiceInstaller().InstallServices(services, Configuration);
@@ -49,7 +60,7 @@ namespace Cgi_Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("AllowAllHeaders");
 
             app.UseEndpoints(endpoints =>
             {
