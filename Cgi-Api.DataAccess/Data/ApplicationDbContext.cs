@@ -11,5 +11,6 @@ namespace Cgi_Api.DataAccess.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Schedule> Schedule { get; set; }
     }
 }
