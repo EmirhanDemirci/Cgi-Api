@@ -4,14 +4,16 @@ using Cgi_Api.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cgi_Api.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200623185303_Incident")]
+    partial class Incident
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,8 +41,6 @@ namespace Cgi_Api.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("IncidentId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Incident");
                 });
@@ -131,15 +131,6 @@ namespace Cgi_Api.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Cgi_Api.Models.Incident", b =>
-                {
-                    b.HasOne("Cgi_Api.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Cgi_Api.Models.Schedule", b =>

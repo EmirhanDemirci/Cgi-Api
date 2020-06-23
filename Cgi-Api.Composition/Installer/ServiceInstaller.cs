@@ -16,6 +16,7 @@ namespace Cgi_Api.Composition.Installer
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IScheduleService, ScheduleService>();
             services.AddScoped<IShiftService, ShiftServices>();
+            services.AddScoped<IIncidentService, IncidentService>();
         }
     }
 }
