@@ -23,13 +23,26 @@ namespace Cgi_Api.Controllers
             _scheduleService = scheduleService;
         }
         [AllowAnonymous]
-        [HttpPost("Create")]
+        [HttpPost("{userId}/Create")]
         public IActionResult CreateSchedule(Schedule schedule, int userId)
         {
             try
             {
                 _scheduleService.create(schedule, userId);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+        [AllowAnonymous]
+        [HttpGet("{Id}/Get")]
+        public IActionResult GetSchedule(int id)
+        {
+            try
+            {
+                return Ok(_scheduleService.Get(id));
             }
             catch (Exception e)
             {

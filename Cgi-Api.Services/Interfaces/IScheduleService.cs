@@ -9,5 +9,6 @@ namespace Cgi_Api.Services.Interfaces
     {
         void create(Schedule schedule, int userId);
         void delete(Schedule schedule);
+        List<Schedule> Get(int id);
     }
 }
