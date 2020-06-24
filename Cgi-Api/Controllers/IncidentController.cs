@@ -50,5 +50,33 @@ namespace Cgi_Api.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+        [AllowAnonymous]
+        [HttpPost("{userId}/Delete")]
+        public IActionResult DeleteIncident([FromRoute]int userId, [FromBody]int incidentId)
+        {
+            try
+            {
+                _incidentService.Delete(incidentId, userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+        [AllowAnonymous]
+        [HttpPost("{userId}/Complete")]
+        public IActionResult CompleteIncident([FromRoute]int userId, [FromBody]int incidentId)
+        {
+            try
+            {
+                _incidentService.Success(incidentId, userId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
     }
 }

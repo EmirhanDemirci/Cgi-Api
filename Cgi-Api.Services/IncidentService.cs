@@ -22,22 +22,30 @@ namespace Cgi_Api.Services
         public void Create(Incident incident, int id)
         {
             MailAddress to = new MailAddress(incident.Email);
-            MailAddress from = new MailAddress("cgiproftaak@yandex.com");
-
+            MailAddress from = new MailAddress("cgiproftaak75@gmail.com");
             MailMessage message = new MailMessage(from, to);
             var dbUser2 = _dbContext.Users.FirstOrDefault(x => x.Id == id);
 
             message.Subject = "Good morning, employee";
-            message.Body = $"Wilt u mijn taak overnemen Groetjes, {dbUser2.FirstName}";
-
-            SmtpClient client = new SmtpClient("smtp.yandex.com", 587)
+            message.Body = $@"<img src=""https://bntqb.org/wp-content/uploads/2019/04/CGI_logo.png"" width=""250px"" heigth=""250px"" alt=""Logo"" /><br /> I need help with a incident can you help me? <br /> Greetings, {dbUser2.FirstName} {dbUser2.LastName}";
+            message.IsBodyHtml = true;
+            try
             {
-                DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("cgiproftaak@yandex.com", "rachelsmolen"),
+                using (var client = new SmtpClient("smtp.gmail.com"))
+                {
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential("cgiproftaak75@gmail.com", "rachelsmolen");
+                    client.EnableSsl = true;
+                    client.Port = 587;
+                    client.Send(message);
+                };
+            }
 
-            };
-            client.Send(message);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             incident.UserId = id;
             var dbUser = _dbContext.Incident.FirstOrDefault(x => x.UserId == id);
             _dbContext.Incident.Add(incident);
@@ -64,6 +72,96 @@ namespace Cgi_Api.Services
                 }
             }
             return null;
+        }
+
+        public void Delete(int incidentId, int id)
+        {
+            if (incidentId != 0 && id != 0)
+            {
+                var user = _dbContext.Incident.Find(id);
+                if (user != null)
+                {
+                    var userToBeDeleted = _dbContext.Incident.Find(incidentId);
+
+                    MailAddress to = new MailAddress(userToBeDeleted.Email);
+                    MailAddress from = new MailAddress("cgiproftaak75@gmail.com");
+                    MailMessage message = new MailMessage(from, to);
+                    var dbUser2 = _dbContext.Users.FirstOrDefault(x => x.Id == id);
+
+                    message.Subject = "Deleted incident, employee";
+                    message.Body = $@"<img src=""https://bntqb.org/wp-content/uploads/2019/04/CGI_logo.png"" width=""250px"" heigth=""250px"" alt=""Logo"" /><br /> Deleted the incident <br /> Greetings, {dbUser2.FirstName} {dbUser2.LastName}";
+                    message.IsBodyHtml = true;
+                    try
+                    {
+                        using (var client = new SmtpClient("smtp.gmail.com"))
+                        {
+                            client.UseDefaultCredentials = false;
+                            client.Credentials = new NetworkCredential("cgiproftaak75@gmail.com", "rachelsmolen");
+                            client.EnableSsl = true;
+                            client.Port = 587;
+                            client.Send(message);
+                        };
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+
+                    if (userToBeDeleted != null)
+                    {
+                        _dbContext.Incident.Remove(userToBeDeleted);
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        public void Success(int incidentId, int id)
+        {
+            if (incidentId != 0 && id != 0)
+            {
+                var user = _dbContext.Incident.Find(id);
+                if (user != null)
+                {
+                    var userToBeDeleted = _dbContext.Incident.Find(incidentId);
+
+                    MailAddress to = new MailAddress(userToBeDeleted.Email);
+                    MailAddress from = new MailAddress("cgiproftaak75@gmail.com");
+                    MailMessage message = new MailMessage(from, to);
+                    var dbUser2 = _dbContext.Users.FirstOrDefault(x => x.Id == id);
+
+                    message.Subject = "Completed incident, employee";
+                    message.Body = $@"<img src=""https://bntqb.org/wp-content/uploads/2019/04/CGI_logo.png"" width=""250px"" heigth=""250px"" alt=""Logo"" /><br /> Incident fixed <br /> Greetings, {dbUser2.FirstName} {dbUser2.LastName}";
+                    message.IsBodyHtml = true;
+                    try
+                    {
+                        using (var client = new SmtpClient("smtp.gmail.com"))
+                        {
+                            client.UseDefaultCredentials = false;
+                            client.Credentials = new NetworkCredential("cgiproftaak75@gmail.com", "rachelsmolen");
+                            client.EnableSsl = true;
+                            client.Port = 587;
+                            client.Send(message);
+                        };
+                    }
+
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                        throw;
+                    }
+
+
+                    if (userToBeDeleted != null)
+                    {
+                        _dbContext.Incident.Remove(userToBeDeleted);
+                        _dbContext.SaveChanges();
+                    }
+                }
+            }
         }
     }
 }
